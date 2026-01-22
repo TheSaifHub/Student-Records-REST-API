@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/TheSaifHub/Student-Records-REST-API/internal/config"
+	"github.com/TheSaifHub/Student-Records-REST-API/internal/http/handlers/student"
 )
 
 func main() {
@@ -22,9 +23,7 @@ func main() {
 	// setup router
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Welcome to my first go project"))
-	})
+	router.HandleFunc("POST /api/students", student.New())
 
 	// setup server
 	server := http.Server{
@@ -49,7 +48,7 @@ func main() {
 
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			slog.Error("server failed", slog.String("error", err.Error()))
+			slog.Error("Server failed", slog.String("error", err.Error()))
 		}
 	}()
 
