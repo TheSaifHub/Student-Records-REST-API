@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"log"
+
 	// "fmt"
 
 	"log/slog"
@@ -13,12 +15,19 @@ import (
 
 	"github.com/TheSaifHub/Student-Records-REST-API/internal/config"
 	"github.com/TheSaifHub/Student-Records-REST-API/internal/http/handlers/student"
+	"github.com/TheSaifHub/Student-Records-REST-API/internal/storage/sqlite"
 )
 
 func main() {
 	// load config
 	cfg := config.MustLoad()
 	// database setup
+	storage, error := sqlite.New(cfg)
+	if error != nil {
+		log.Fatal(error)
+	}
+
+	slog.Info("Storage Initialized", slog.String("env", cfg.Env), slog.String("version", "1.0.0"))
 
 	// setup router
 	router := http.NewServeMux()

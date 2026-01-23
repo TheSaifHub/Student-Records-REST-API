@@ -31,7 +31,11 @@ func New() http.HandlerFunc {
 		}
 
 		// request validation
-		validator.New().Struct(student)
+		if err := validator.New().Struct(student); err != nil {
+			validateErrs := err.(validator.ValidationErrors)
+			response.WriteJson(w, http.StatusBadRequest, response.ValidationError(validateErrs))
+			return
+		}
 
 		// w.Write([]byte("Welcome to my first go project"))
 		response.WriteJson(w, http.StatusCreated, map[string]string{"Success": "OK"})
