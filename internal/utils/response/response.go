@@ -51,3 +51,4 @@ func ValidationError(errs validator.ValidationErrors) Response {
 		Error:  strings.Join(errMsgs, ", "),
 	}
 }
+
